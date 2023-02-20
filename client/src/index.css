@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Labrada:wght@600&family=Open+Sans&family=Rubik&display=swap');
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+@layer components{
+    .input-style{
+        @apply border rounded-md outline-none p-2
+    }
+}

@@ -5,11 +5,12 @@ const bcrypt = require("bcryptjs");
 const register = async (req, res) => {
     try{
         const {username,password,email} = req.body;
-        const user = await AuthSchema.findOne(email);
+
+        const user = await AuthSchema.findOne({email: req.body.email});
         if(user){
             return res.status(400).json({message:"An account has already been created with this e-mail."})
         }
-        if(password.length > 0){
+        if(password.length < 6){
             return res.status(400).json({message:"Password must be at least 6 characters."})
         }
         if(!isEmail(email)){
@@ -18,7 +19,7 @@ const register = async (req, res) => {
 
         const passwordHash = await bcrypt.hash(password,12);
         const newUser = await AuthSchema.create({username,email,password:passwordHash});
-        const token = jwt.sign({id:newUser._id},"SECRET_KEY",{expiresIn:"4h"});
+        const token = jwt.sign({id:newUser._id},"SECRET_KEY",{expiresIn:"1h"});
         res.status(201).json({
             status: "OK",
             newUser,
@@ -31,7 +32,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try{
         const {email,password} = req.body;
-        const user = await AuthSchema.findOne(email);
+        const user = await AuthSchema.findOne({email: req.body.email});
         if(!user){
             return res.status(404).json({message:"User not found."});
         }
