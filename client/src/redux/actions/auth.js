@@ -6,6 +6,10 @@ export const registerAction = (authData) =>  async (dispatch) => {
         const {data} = await axios.post("http://localhost:5000/register",authData);
         dispatch({type:"REGISTER",payload:data})
         window.location = "/"
+        toast("Register successfully", {
+            position: "top-right",
+            autoClose: 5000,
+        });
     }catch (err){
         toast(err.response.data.message, {
             position: "top-right",

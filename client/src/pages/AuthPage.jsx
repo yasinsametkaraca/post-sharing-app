@@ -18,8 +18,8 @@ const AuthPage = () => {
     }
 
     return (
-        <div className={"w-full h-screen bg-indigo-500 flex justify-center items-center fixed top-0 left-0 right-0 bottom-0 z-50"}>
-            <div className={"bg-gray-100 w-1/3 p-3 rounded-3xl  shadow-cyan-500"}>
+        <div className={"w-full h-screen flex justify-center items-center fixed top-0 left-0 right-0 bottom-0 z-50"}>
+            <div className={"px-6 py-10 bg-gray-50 w-1/3 p-3 rounded-2xl  shadow-cyan-500"}>
                 <h1 className={"text-3xl text-gray-600 text-center font-bold"}>{signUp ? "Register" : "Login"}</h1>
                 <div className={"flex flex-col my-9 space-y-4"}>
                     {signUp && <input value={authData.username} name={"username"} onChange={(e) => onChangeFunction(e)} type="text" placeholder={"Username"} className={"input-style"}/>}
