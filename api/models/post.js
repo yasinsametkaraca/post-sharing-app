@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema({
     user: {
-        type: Object,
+        type: String,
         required: true,
         trim: true,
     },
@@ -20,5 +20,6 @@ const PostSchema = new mongoose.Schema({
         default: new Date()
     },
 })
+
 
 module.exports = mongoose.model("post", PostSchema);

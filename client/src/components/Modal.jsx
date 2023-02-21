@@ -1,13 +1,31 @@
-import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {createPostAction, getPostsAction, updatePostAction} from "../redux/actions/post";
+import {registerAction} from "../redux/actions/auth";
 
 const Modal = () => {
     const [postData, setPostData] = useState({user:"",title:"",description:""});
     const dispatch = useDispatch();
+    const {modal} = useSelector(state => state.modal)
 
     const onChangeFunction = (e) => {
         setPostData({...postData,[e.target.name]:e.target.value});
     }
+
+    const postCreate = () => {
+        if(modal?.post){
+            dispatch(updatePostAction(modal?.post._id,postData))
+        }else {
+            dispatch(createPostAction(postData))
+        }
+    }
+    useEffect(() => {
+        setPostData({
+            user:modal.post?.user || "",
+            title:modal.post?.title || "",
+            description:modal.post?.description || ""
+        })
+    }, []);
 
     return (
         <>
@@ -23,7 +41,7 @@ const Modal = () => {
                         <div
                             className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                             <h3 className="text-3xl font-semibold">
-                                Share Post
+                                {modal?.post ? "Update Post" : "Share Post"}
                             </h3>
                             <button
                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -39,7 +57,7 @@ const Modal = () => {
                         <div className="flex flex-col my-4 space-y-3 m-2">
                             <input value={postData.user} name={"user"} onChange={onChangeFunction} type="text" placeholder={"User"} className={"input-style"}/>
                             <input value={postData.title} name={"title"} onChange={onChangeFunction} type="text" placeholder={"Title"} className={"input-style"}/>
-                            <input value={postData.description} name={"description"} onChange={onChangeFunction} type="text" placeholder={"Description"} className={"input-style"}/>
+                            <textarea value={postData.description} name={"description"} onChange={onChangeFunction} type="text" placeholder={"Description"} className={"input-style"}/>
                         </div>
                         {/*footer*/}
                         <div
@@ -55,11 +73,11 @@ const Modal = () => {
                                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() => {
-                                    dispatch({type:"MODAL",payload:false});
-
+                                    dispatch({type:"MODAL",payload:false});  //action olmayanlarda direk böyle yazarız. Modal da backend işlemi olmadıgından action kullanmadık.
+                                    postCreate();
                                 }}
                             >
-                                Share
+                                {modal?.post ? "Update" : "Share"}
                             </button>
                         </div>
                     </div>

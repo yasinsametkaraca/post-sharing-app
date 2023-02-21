@@ -6,9 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import useToken from "./hooks/useToken";
 import Navbar from "./components/Navbar";
 import Modal from "./components/Modal";
-import {useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 
 const App = () => {
+
   const [token] = useToken();
   const {modal} = useSelector(state => state.modal)
 
